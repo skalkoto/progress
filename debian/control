@@ -7,6 +7,7 @@ Standards-Version: 3.9.3
 Homepage: https://github.com/verigak/progress
 Vcs-Browser: https://github.com/verigak/progress
 Vcs-Git: https://github.com/verigak/progress.git
+X-Python-Version: >= 2.6
 
 Package: python-progress
 Architecture: all
