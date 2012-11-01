@@ -20,23 +20,24 @@ from .helpers import WriteMixin
 
 class Counter(WriteMixin, Infinite):
     message = ''
+    hide_cursor = True
 
     def update(self):
-        super(Counter, self).update()
         self.write(str(self.index))
 
 
 class Countdown(WriteMixin, Progress):
+    hide_cursor = True
+
     def update(self):
-        super(Countdown, self).update()
         self.write(str(self.remaining))
 
 
 class Stack(WriteMixin, Progress):
     phases = (u' ', u'▁', u'▂', u'▃', u'▄', u'▅', u'▆', u'▇', u'█')
+    hide_cursor = True
 
     def update(self):
-        super(Stack, self).update()
         nphases = len(self.phases)
         i = min(nphases - 1, int(self.progress * nphases))
         self.write(self.phases[i])

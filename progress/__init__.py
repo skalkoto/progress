@@ -19,7 +19,7 @@ from sys import stderr
 from time import time
 
 
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 
 
 class Infinite(object):
@@ -35,28 +35,33 @@ class Infinite(object):
                 self.ctx[key] = val
 
         self.index = 0
-        self.avg = None
+        self.avg = 0
         self._ts = time()
 
     def update_stats(self):
         # Calculate moving average
         now = time()
         dt = now - self._ts
-        self._ts = now
         w = self.avg_window
-        self.avg = dt if self.avg is None else (dt + w * self.avg) / (w + 1)
+        self.avg = dt if self.avg else (dt + w * self.avg) / (w + 1)
+        self._ts = now
 
-    def update(self):
-        self.update_stats()
         kv = [(key, val) for key, val in self.__dict__.items()
                          if not key.startswith('_')]
         self.ctx.update(kv)
+
+    def update(self):
+        pass
+
+    def start(self):
+        pass
 
     def finish(self):
         pass
 
     def next(self):
         self.index = self.index + 1
+        self.update_stats()
         self.update()
 
     def iter(self, it):
@@ -72,28 +77,36 @@ class Progress(Infinite):
     def __init__(self, *args, **kwargs):
         super(Progress, self).__init__(*args, **kwargs)
         self.max = kwargs.get('max', 100)
-        self.eta = None
+        self.eta = 0
 
     def update_stats(self):
-        if self.delta <= 0:
-            return
-
-        # Calculate moving average
-        now = time()
-        dt = (now - self._ts) / self.delta
-        self._ts = now
-        w = self.avg_window
-        self.avg = dt if self.avg is None else (dt + w * self.avg) / (w + 1)
-
         self.progress = min(1, self.index / self.max)
         self.percent = self.progress * 100
         self.remaining = self.max - self.index
-        self.eta = int(ceil(self.avg * self.remaining))
+
+        # Calculate moving average
+        now = time()
+        if self.delta:
+            dt = (now - self._ts) / self.delta
+            w = self.avg_window
+            self.avg = dt if self.avg else (dt + w * self.avg) / (w + 1)
+            self.eta = int(ceil(self.avg * self.remaining))
+        self._ts = now
+
+        kv = [(key, val) for key, val in self.__dict__.items()
+                         if not key.startswith('_')]
+        self.ctx.update(kv)
+
+    def start(self):
+        self.delta = 0
+        self.update_stats()
+        self.update()
 
     def next(self):
         prev = self.index
         self.index = min(self.index + 1, self.max)
         self.delta = self.index - prev
+        self.update_stats()
         self.update()
 
     def goto(self, index):
@@ -104,6 +117,7 @@ class Progress(Infinite):
 
         self.index = index
         self.delta = delta
+        self.update_stats()
         self.update()
 
     def iter(self, it):
