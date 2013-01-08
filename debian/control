@@ -16,4 +16,5 @@ Depends: ${shlibs:Depends},
  ${python:Depends},
 Provides: ${python:Provides}
 Description: Easy to use progress bars for Python.
-
+ This project contains a number of progress bars and spinners to use for a cli
+ programe in python.
