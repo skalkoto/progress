@@ -37,7 +37,8 @@ class WriteMixin(object):
     def write(self, s):
         if self.file.isatty():
             b = '\b' * self._width
-            print(b + s.ljust(self._width), end='', file=self.file)
+            c = s.encode('utf8').ljust(self._width)
+            print(b + c, end='', file=self.file)
             self._width = max(self._width, len(s))
             self.file.flush()
 
@@ -64,7 +65,7 @@ class WritelnMixin(object):
     def writeln(self, line):
         if self.file.isatty():
             self.clearln()
-            print(line, end='', file=self.file)
+            print(line.encode('utf8'), end='', file=self.file)
             self.file.flush()
 
     def finish(self):
@@ -72,3 +73,19 @@ class WritelnMixin(object):
             print(file=self.file)
             if self.hide_cursor:
                 print(SHOW_CURSOR, end='', file=self.file)
+
+
+from signal import signal, SIGINT
+from sys import exit
+
+
+class SigIntMixin(object):
+    """Registers a signal handler that calls finish on SIGINT"""
+
+    def __init__(self, *args, **kwargs):
+        super(SigIntMixin, self).__init__(*args, **kwargs)
+        signal(SIGINT, self._sigint_handler)
+
+    def _sigint_handler(self, signum, frame):
+        self.finish()
+        exit(0)
