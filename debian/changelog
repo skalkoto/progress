@@ -1,3 +1,9 @@
+python-progress (1.1-1) stable; urgency=low
+
+  * New upstream version
+
+ -- Nikos skalkotos <skalkoto@grnet.gr>  Wed, 17 Apr 2013 16:11:16 +0300
+
 python-progress (1.0.2-1) stable; urgency=low
 
   * New upstream version
