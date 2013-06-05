@@ -1,3 +1,9 @@
+python-progress (1.1-1wheezy) wheezy; urgency=low
+
+  * Repack for wheezy
+
+ -- Nikos skalkotos <skalkoto@grnet.gr>  Wed, 05 Jun 2013 12:12:58 +0300
+
 python-progress (1.1-1) stable; urgency=low
 
   * New upstream version
