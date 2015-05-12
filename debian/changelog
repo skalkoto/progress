@@ -1,3 +1,9 @@
+python-progress (1.1-2~jessie) jessie; urgency=low
+
+  * Repack for jessie
+
+ -- Nikos skalkotos <skalkoto@grnet.gr>  Tue, 12 May 2015 17:39:01 +0300
+
 python-progress (1.1-1wheezy) wheezy; urgency=low
 
   * Repack for wheezy

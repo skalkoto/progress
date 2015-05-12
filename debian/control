@@ -1,13 +1,13 @@
 Source: python-progress
 Section: python
 Priority: extra
-Maintainer: Kostas Papadimitriou <kpap@grnet.gr>
-Build-Depends: debhelper (>= 8.0.0), python, python-setuptools
-Standards-Version: 3.9.3
+Maintainer: Nikos Skalkotos <skalkoto@grnet.gr>
+Build-Depends: debhelper (>= 8.0.0), python, python-setuptools, dh-python
+Standards-Version: 3.9.6
 Homepage: https://github.com/verigak/progress
 Vcs-Browser: https://github.com/verigak/progress
 Vcs-Git: https://github.com/verigak/progress.git
-X-Python-Version: >= 2.6
+X-Python-Version: >= 2.7
 
 Package: python-progress
 Architecture: all
@@ -15,6 +15,6 @@ Depends: ${shlibs:Depends},
  ${misc:Depends},
  ${python:Depends},
 Provides: ${python:Provides}
-Description: Python Progress
+Description: Progress library for python
  Easy to use progress bars for Python.
 
